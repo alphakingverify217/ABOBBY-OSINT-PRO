@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ABOBBY OSINT PRO</title>
+<style>
+*{box-sizing:border-box}
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:#08111f;
+color:#fff;
+}
+header{
+background:#101e32;
+padding:22px 15px;
+text-align:center;
+border-bottom:2px solid #00d4ff;
+}
+header h1{color:#00d4ff;margin:0}
+header p{color:#aabbd0;font-size:13px}
+.container{padding:18px;max-width:650px;margin:auto}
+.card{
+background:#14243a;
+padding:17px;
+margin-bottom:15px;
+border-radius:12px;
+border:1px solid #263d58;
+}
+.card h3{margin-top:0;color:#00d4ff}
+input,select{
+width:100%;
+padding:14px;
+margin:8px 0;
+border-radius:7px;
+border:1px solid #49627c;
+background:#091525;
+color:white;
+font-size:15px;
+}
+button{
+width:100%;
+padding:13px;
+background:#00b9db;
+border:0;
+border-radius:7px;
+font-weight:bold;
+font-size:15px;
+cursor:pointer;
+color:#06111e;
+}
+button:hover{background:#50ddf5}
+.result{
+background:#091525;
+padding:13px;
+border-radius:7px;
+margin-top:12px;
+overflow-wrap:anywhere;
+}
+.small{font-size:12px;color:#9fb2c9}
+footer{text-align:center;padding:20px;color:#8296ad;font-size:12px}
+</style>
+</head>
+<body>
+
+<header>
+<h1>ABOBBY OSINT PRO</h1>
+<p>OPEN SOURCE INTELLIGENCE INVESTIGATION PLATFORM</p>
+</header>
+
+<div class="container">
+
+<div class="card">
+<h3>📱 Phone Number Research</h3>
+<input id="phone" placeholder="Enter phone number with country code">
+<button onclick="phoneSearch()">Investigate Number</button>
+<div id="phoneResult" class="result" hidden></div>
+</div>
+
+<div class="card">
+<h3>📧 Email Investigation</h3>
+<input id="email" placeholder="Enter email address">
+<button onclick="emailSearch()">Investigate Email</button>
+<div id="emailResult" class="result" hidden></div>
+</div>
+
+<div class="card">
+<h3>🔎 Username Search</h3>
+<input id="username" placeholder="Enter username">
+<button onclick="usernameSearch()">Search Username</button>
+<div id="usernameResult" class="result" hidden></div>
+</div>
+
+<div class="card">
+<h3>🌐 Website Investigation</h3>
+<input id="website" placeholder="Enter website domain">
+<button onclick="websiteSearch()">Investigate Website</button>
+<div id="websiteResult" class="result" hidden></div>
+</div>
+
+<div class="card">
+<h3>📋 Investigation Notes</h3>
+<input id="caseName" placeholder="Investigation title">
+<input id="caseNotes" placeholder="Write your findings">
+<button onclick="saveNotes()">Save Notes</button>
+<div id="notesResult" class="result" hidden></div>
+</div>
+
+<div class="card">
+<h3>⚖️ Investigation Guidelines</h3>
+<p class="small">
+Use publicly available information only. Respect privacy and applicable laws.
+This application does not hack accounts, reveal private identities,
+or secretly track anyone.
+</p>
+</div>
+
+</div>
+
+<footer>
+ABOBBY OSINT PRO © 2026
+<br>Independent Public Information Research Tool
+</footer>
+
+<script>
+function show(id,message){
+let box=document.getElementById(id);
+box.hidden=false;
+box.textContent=message;
+}
+
+function phoneSearch(){
+let value=document.getElementById("phone").value.trim();
+if(!value)return alert("Enter a phone number");
+show("phoneResult","Number entered: "+value+
+"\nUse a public phone-number directory to verify country and carrier information.");
+}
+
+function emailSearch(){
+let value=document.getElementById("email").value.trim();
+if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))
+return alert("Enter a valid email address");
+show("emailResult","Email entered: "+value+
+"\nYou can research its public domain records and publicly reported security breaches.");
+}
+
+function usernameSearch(){
+let value=document.getElementById("username").value.trim();
+if(!value)return alert("Enter a username");
+let sites=[
+"https://www.google.com/search?q=",
+"https://github.com/search?q=",
+"https://www.reddit.com/search/?q="
+];
+let result="Public search links for: "+value+"\n";
+sites.forEach(url=>result+=url+encodeURIComponent(value)+"\n");
+show("usernameResult",result);
+}
+
+function websiteSearch(){
+let value=document.getElementById("website").value.trim();
+if(!value)return alert("Enter a website");
+let domain=value.replace(/^https?:\/\//,"").split("/")[0];
+show("websiteResult","Domain: "+domain+
+"\nGoogle search: https://www.google.com/search?q="+
+encodeURIComponent(domain)+
+"\nResearch public DNS and registration records.");
+}
+
+function saveNotes(){
+let title=document.getElementById("caseName").value.trim();
+let notes=document.getElementById("caseNotes").value.trim();
+if(!title||!notes)return alert("Enter a title and findings");
+let old=JSON.parse(localStorage.getItem("osintNotes")||"[]");
+old.push({title,notes,date:new Date().toLocaleString()});
+localStorage.setItem("osintNotes",JSON.stringify(old));
+show("notesResult","Investigation notes saved successfully on this device.");
+}
+</script>
+
+</body>
+  </html>
